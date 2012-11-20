@@ -553,10 +553,8 @@ contains
     real(dp) :: A(n, n)
     integer :: i
 
-    A = 0
-    do i = 1, n
-       A(i, i) = 1
-    end do
+    A = 0.0_dp
+    forall(i = 1:n) A(i, i) = 1.0_dp
   end function eye
 
   function ddet(A) result(x)
