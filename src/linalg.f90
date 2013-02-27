@@ -95,8 +95,8 @@ contains
     real(dp), allocatable ::  At(:,:), vl(:,: ), vr(:,:), wi(:), work(:), wr(:)
     integer :: info, lda, ldvl, ldvr, lwork, n, i
 
-    lda = size(A(:,1))
-    n = size(A(1,:))
+    lda = size(A, 1)
+    n = size(A, 2)
     call assert_shape(A, [n, n], "solve", "A")
     call assert_shape(c, [n, n], "solve", "c")
     ldvl = n
@@ -144,8 +144,8 @@ contains
     real(dp), allocatable :: rwork(:)
     complex(dp), allocatable :: vl(:,:), vr(:,:), work(:)
 
-    lda = size(A(:,1))
-    n = size(A(1,:))
+    lda = size(A, 1)
+    n = size(A, 2)
     call assert_shape(A, [n, n], "solve", "A")
     call assert_shape(c, [n, n], "solve", "c")
     ldvl = n
@@ -178,8 +178,8 @@ contains
     real(dp), allocatable ::  At(:,:), vl(:,: ), vr(:,:), wi(:), work(:), wr(:)
     integer :: info, lda, ldvl, ldvr, lwork, n
 
-    lda = size(A(:,1))
-    n = size(A(1,:))
+    lda = size(A, 1)
+    n = size(A, 2)
     call assert_shape(A, [n, n], "solve", "A")
     ldvl = n
     ldvr = n
@@ -213,8 +213,8 @@ contains
     real(dp), allocatable :: rwork(:)
     complex(dp), allocatable :: At(:,:), vl(:,:), vr(:,:), work(:)
 
-    lda = size(A(:,1))
-    n = size(A(1,:))
+    lda = size(A, 1)
+    n = size(A, 2)
     call assert_shape(A, [n, n], "solve", "A")
     ldvl = n
     ldvr = n
@@ -253,7 +253,7 @@ contains
     real(dp), allocatable :: Bmt(:,:), work(:)
 
     ! solve
-    n = size(Am,1)
+    n = size(Am, 1)
     call assert_shape(Am, [n, n], "eigh", "Am")
     call assert_shape(Bm, [n, n], "eigh", "B")
     call assert_shape(c, [n, n], "eigh", "c")
@@ -293,7 +293,7 @@ contains
     real(dp), allocatable :: work(:)
 
     ! solve
-    n = size(Am,1)
+    n = size(Am, 1)
     call assert_shape(Am, [n, n], "eigh", "Am")
     call assert_shape(c, [n, n], "eigh", "c")
     lwork = 1 + 6*n + 2*n**2
@@ -329,7 +329,7 @@ contains
     complex(dp), allocatable :: Bmt(:,:), work(:)
 
     ! solve
-    n = size(Am,1)
+    n = size(Am, 1)
     call assert_shape(Am, [n, n], "eigh", "Am")
     call assert_shape(Bm, [n, n], "eigh", "Bm")
     call assert_shape(c, [n, n], "eigh", "c")
@@ -404,7 +404,7 @@ contains
     integer, allocatable :: ipiv(:)
 
     ! use LAPACK's dgetrf and dgetri
-    n = size(Am(1, :))
+    n = size(Am, 2)
     call assert_shape(Am, [n, n], "inv", "Am")
     lda = n
     nb = ilaenv(1, 'DGETRI', "UN", n, -1, -1, -1)  ! TODO: check UN param
@@ -495,8 +495,8 @@ contains
     integer :: n, info, lda
     integer, allocatable :: ipiv(:)
 
-    n = size(A(1,:))
-    lda = size(A(:, 1))  ! TODO: remove lda (which is = n!)
+    n = size(A, 2)
+    lda = size(A, 1)  ! TODO: remove lda (which is = n!)
     call assert_shape(A, [n, n], "solve", "A")
     allocate(At(lda,n), bt(n,1), ipiv(n), x(n))
     At = A
@@ -526,8 +526,8 @@ contains
     integer :: n, info, lda
     integer, allocatable :: ipiv(:)
 
-    n = size(A(1,:))
-    lda = size(A(:, 1))  ! TODO: remove lda here, too
+    n = size(A, 2)
+    lda = size(A, 1)  ! TODO: remove lda here, too
     call assert_shape(A, [n, n], "solve", "A")
     allocate(At(lda,n), bt(n,1), ipiv(n), x(n))
     At = A
@@ -567,7 +567,7 @@ contains
     integer, allocatable :: ipiv(:)
     real(dp), allocatable :: At(:,:)
 
-    n = size(A(1,:))
+    n = size(A, 2)
     call assert_shape(A, [n, n], "det", "A")
     allocate(At(n,n), ipiv(n))
     At = A
@@ -609,7 +609,7 @@ contains
     integer, allocatable :: ipiv(:)
     complex(dp), allocatable :: At(:,:)
 
-    n = size(A(1,:))
+    n = size(A, 2)
     call assert_shape(A, [n, n], "det", "A")
     allocate(At(n,n), ipiv(n))
     At = A
@@ -648,8 +648,8 @@ contains
     real(dp), allocatable :: work(:), At(:,:), Bt(:,:)
     integer, allocatable :: jpvt(:)
 
-    m = size(A(:,1)) ! = lda
-    n = size(A(1,:))
+    m = size(A, 1) ! = lda
+    n = size(A, 2)
     ldb = size(b)
     allocate(x(n), At(m,n), Bt(ldb,1), jpvt(n), work(1))
     call dgelsy(m, n, 1, At, m, Bt, ldb, jpvt, rcond, rank, work, &
@@ -682,8 +682,8 @@ contains
     real(dp), allocatable :: rwork(:)
     integer, allocatable :: jpvt(:)
 
-    m = size(A(:,1)) ! = lda
-    n = size(A(1,:))
+    m = size(A, 1) ! = lda
+    n = size(A, 2)
     ldb = size(b)
     allocate(x(n), At(m,n), Bt(ldb,1), jpvt(n), work(1), rwork(2*n))
     call zgelsy(m, n, 1, At, m, Bt, ldb, jpvt, rcond, rank, work, &
@@ -765,8 +765,8 @@ contains
     real(dp), allocatable :: work(:), At(:,:)
     real(dp) :: u(1,1), vt(1,1)  ! not used if only s is to be computed
 
-    m = size(A(:,1))  ! = lda
-    n = size(A(1,:))
+    m = size(A, 1)  ! = lda
+    n = size(A, 2)
     allocate(At(m,n), s(min(m,n)))
     At(:,:) = A(:, :)  ! A is overwritten in dgesvd
 
@@ -802,8 +802,8 @@ contains
     real(dp), allocatable :: rwork(:)
     complex(dp) :: u(1,1), vt(1,1)  ! not used if only s is to be computed
 
-    m = size(A(:,1))  ! = lda
-    n = size(A(1,:))
+    m = size(A, 1)  ! = lda
+    n = size(A, 2)
     lrwork = 5*min(m,n)
     allocate(At(m,n), s(min(m,n)), rwork(lrwork))
     At(:,:) = A(:,:)  ! A is overwritten in zgesvd!
@@ -842,10 +842,8 @@ contains
     integer :: info, lwork, m, n, ldu
     real(dp), allocatable :: work(:), At(:,:)
 
-    ! TODO: check shapes here and in other routines?
-
-    m = size(A(:,1))  ! = lda
-    n = size(A(1,:))
+    m = size(A, 1)  ! = lda
+    n = size(A, 2)
     ldu = m
     allocate(At(m,n))
     At(:,:) = A(:,:)  ! use a temporary as dgesvd destroys its input
@@ -890,10 +888,8 @@ contains
     real(dp), allocatable :: rwork(:)
     complex(dp), allocatable :: work(:), At(:,:)
 
-    ! TODO: check shapes here and in other routines?
-
-    m = size(A(:,1))  ! = lda
-    n = size(A(1,:))
+    m = size(A, 1)  ! = lda
+    n = size(A, 2)
     ldu = m
     lrwork = 5*min(m,n)
     allocate(rwork(lrwork), At(m,n))
